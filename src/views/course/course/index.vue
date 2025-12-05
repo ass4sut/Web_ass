@@ -41,6 +41,14 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="课程介绍" prop="info">
+        <el-input
+          v-model="queryParams.info"
+          placeholder="请输入课程介绍"
+          clearable
+          @keyup.enter="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -171,6 +179,7 @@ const data = reactive({
     name: null,
     price: null,
     applicablePerson: null,
+    info: null,
   },
   rules: {
     code: [
@@ -181,9 +190,6 @@ const data = reactive({
     ],
     name: [
       { required: true, message: "课程名称不能为空", trigger: "blur" }
-    ],
-    price: [
-      { required: true, message: "价格不能为空", trigger: "blur" }
     ],
     applicablePerson: [
       { required: true, message: "适用人群不能为空", trigger: "blur" }
