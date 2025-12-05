@@ -191,6 +191,9 @@ const data = reactive({
     name: [
       { required: true, message: "课程名称不能为空", trigger: "blur" }
     ],
+    price: [
+      { required: true, message: "价格不能为空", trigger: "blur" }
+    ],
     applicablePerson: [
       { required: true, message: "适用人群不能为空", trigger: "blur" }
     ],
