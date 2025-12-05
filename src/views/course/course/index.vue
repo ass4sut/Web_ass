@@ -41,14 +41,6 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="课程介绍" prop="info">
-        <el-input
-          v-model="queryParams.info"
-          placeholder="请输入课程介绍"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -62,7 +54,7 @@
           plain
           icon="Plus"
           @click="handleAdd"
-          v-hasPermi="['system:course:add']"
+          v-hasPermi="['course:course:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -72,7 +64,7 @@
           icon="Edit"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:course:edit']"
+          v-hasPermi="['course:course:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -82,7 +74,7 @@
           icon="Delete"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:course:remove']"
+          v-hasPermi="['course:course:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -91,7 +83,7 @@
           plain
           icon="Download"
           @click="handleExport"
-          v-hasPermi="['system:course:export']"
+          v-hasPermi="['course:course:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -108,8 +100,8 @@
       <el-table-column label="课程介绍" align="center" prop="info" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:course:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:course:remove']">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['course:course:edit']">修改</el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['course:course:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -155,7 +147,7 @@
 </template>
 
 <script setup name="Course">
-import { listCourse, getCourse, delCourse, addCourse, updateCourse } from "@/api/system/course"
+import { listCourse, getCourse, delCourse, addCourse, updateCourse } from "@/api/course/course"
 
 const { proxy } = getCurrentInstance()
 
@@ -179,9 +171,26 @@ const data = reactive({
     name: null,
     price: null,
     applicablePerson: null,
-    info: null,
   },
   rules: {
+    code: [
+      { required: true, message: "课程编码不能为空", trigger: "blur" }
+    ],
+    subject: [
+      { required: true, message: "课程学科不能为空", trigger: "blur" }
+    ],
+    name: [
+      { required: true, message: "课程名称不能为空", trigger: "blur" }
+    ],
+    price: [
+      { required: true, message: "价格不能为空", trigger: "blur" }
+    ],
+    applicablePerson: [
+      { required: true, message: "适用人群不能为空", trigger: "blur" }
+    ],
+    info: [
+      { required: true, message: "课程介绍不能为空", trigger: "blur" }
+    ],
   }
 })
 
@@ -290,7 +299,7 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('system/course/export', {
+  proxy.download('course/course/export', {
     ...queryParams.value
   }, `course_${new Date().getTime()}.xlsx`)
 }
